@@ -19,7 +19,7 @@ class BoxWindow:
         r"""BoxWindow: :math:`[a_1, b_1] \times [a_2, b_2] \times \cdots`
 
         Returns:
-            [type]: [description]
+            [str]:
         """
         string = "BoxWindow: "
         dim = self.dimension()
@@ -47,15 +47,15 @@ class BoxWindow:
 
     # todo test it
     def __len__(self):
-        """returns the max length of the box sides'
+        """returns the integer part of the max length of the box sides'
 
         Returns:
-            [numerical type]: max length of the box sides'
+            [int]: integer part of max length of the box sides'
         """
         # * exploit numpy vectors, use np.diff, np.max
         # * brackets [a, b] are not necessary here
         # return np.max(np.array([b - a for [a, b] in self.bounds]))
-        return np.max(np.diff(self.bounds))
+        return int(np.max(np.diff(self.bounds)))
 
     def __contains__(self, point):
         """tell if a given point is contained in the box

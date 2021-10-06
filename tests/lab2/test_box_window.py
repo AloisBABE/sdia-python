@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from src.lab2.box_window import BallWindow, BoxWindow, UnitBoxWindow
+from lab2.box_window import BallWindow, BoxWindow, UnitBoxWindow
 
 
 def test_raise_type_error_when_something_is_called():
@@ -47,6 +47,20 @@ def test_indicator_function_box_2d(box_2d_05, point, expected):
 # ================================
 # ==== WRITE YOUR TESTS BELOW ====
 # ================================
+
+
+@pytest.mark.parametrize(
+    "bounds, expected",
+    [
+        (np.array([[0, 4], [0, 6]]), 6),
+        (np.array([[0, 3], [0, 6]]), 6),
+        (np.array([[-1, 4], [3.5, 3.6], [5, 9]]), 5),
+    ],
+)
+def test_len(bounds, expected):
+    box = BoxWindow(bounds)
+    length = len(box)
+    assert expected == length
 
 
 @pytest.mark.parametrize(
