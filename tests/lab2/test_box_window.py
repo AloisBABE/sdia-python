@@ -88,6 +88,29 @@ def test_volume_unitBox_(center):
 @pytest.mark.parametrize(
     "center, radius, expected",
     [
+        (np.array([1, 2, 3]), 4, "BallWindow: center:[1 2 3] radius:4"),
+        (np.array([1]), 4.2, "BallWindow: center:[1] radius:4.2"),
+    ],
+)
+def test_ball_string_representation(center, radius, expected):
+    ball = BallWindow(center, radius)
+    string = str(ball)
+    assert string == expected
+
+
+@pytest.mark.parametrize(
+    "center, radius, expected",
+    [(np.array([1, 2, 3]), 4, 8), (np.array([1, 5.12, 4.65, np.pi]), 4.21, 8.42),],
+)
+def test_ball_string_representation(center, radius, expected):
+    ball = BallWindow(center, radius)
+    diameter = len(ball)
+    assert diameter == expected
+
+
+@pytest.mark.parametrize(
+    "center, radius, expected",
+    [
         (np.array([3, 4]), 5, np.pi * 5 ** 2),
         (np.array([6.5, 7, 18]), 4, 4 * np.pi * 4 ** 3 / 3),
     ],
@@ -104,9 +127,15 @@ def test_volume_BallWindow_(center, radius, expected):
         (np.array([0, 0]), 1, np.array([0, 0]), True),
         (np.array([5, 4, 1]), 3, np.array([8, 4, 1]), True),
         (np.array([7, 0, 4]), 2, np.array([9, 0.01, 4.01]), False),
+        (
+            np.array([0, 0]),
+            2,
+            np.array([[0, 1], [1, 1], [5, -3]]),
+            np.array([True, True, False]),
+        ),
     ],
 )
 def test_indicator_function_ballWindow(center, radius, point, expected):
     ball = BallWindow(center, radius)
     is_in = ball.indicator_function(point)
-    assert is_in == expected
+    assert np.array_equal(is_in, expected)

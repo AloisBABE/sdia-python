@@ -177,15 +177,12 @@ class BallWindow:
     # todo docstring
     # todo test it
     def __str__(self):
-        r"""
+        """ BallWindow: center:[c1 c2 ...] radius:r
 
         Returns:
             [type]: [description]
         """
-        string = "BallWindow: "
-        dim = self.dimension
-        # ! use f-strings
-        string += "center: " + str(self.center) + "radius: " + str(self.radius)
+        string = f"BallWindow: center:{self.center} radius:{self.radius}"
 
         return string
 
@@ -208,14 +205,16 @@ class BallWindow:
             [boolean]: True if the point is in the ball, False otherwise
         """
         assert len(point) == self.dimension()
-        dim = self.dimension()
+        # dim = self.dimension()
         # * exploit numpy vectorization power
         # ? how about np.linalg.norm
-        d = 0  # ! naming: d -> distance ?
-        for i in range(dim):
-            d += (self.center[i] - point[i]) ** 2
+        # distance_squared = 0  # (!) naming: d -> distance ?
+        # for i in range(dim):
+        #    distance_squared += (self.center[i] - point[i]) ** 2
+        distance = np.linalg.norm(point - self.center)
 
-        return d <= self.radius ** 2
+        # return distance_squared <= self.radius ** 2
+        return distance <= self.radius
 
     def dimension(self):
         """returns the number of dimensions of the ball
@@ -234,13 +233,14 @@ class BallWindow:
         n = self.dimension()
         R = self.radius
         # * consider divmod to avoid multiple n//2
-        if n % 2 == 0:
-            V = np.pi ** (n // 2) * R ** n / np.math.factorial(n // 2)
+        k, remainder = divmod(n, 2)
+        if remainder == 0:
+            V = np.pi ** k * R ** n / np.math.factorial(k)
         else:
             V = (
                 2
-                * np.math.factorial(n // 2)
-                * (4 * np.pi) ** (n // 2)
+                * np.math.factorial(k)
+                * (4 * np.pi) ** k
                 * R ** n
                 / np.math.factorial(n)
             )
@@ -256,4 +256,7 @@ class BallWindow:
             [boolean]: value of the indicator function
         """
         # ? how would you handle multiple points
-        return point in self
+        if len(np.shape(point)) > 1:
+            return np.apply_along_axis(lambda x: x in self, 1, point)
+        else:
+            return point in self
