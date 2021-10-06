@@ -66,13 +66,15 @@ class BoxWindow:
         Returns:
             [boolean]: True if the point is in the box, False otherwise
         """
+        # * consider initializing dim before assert and use it there
+        dim = self.dimension()
+
         # * nice check
-        assert len(point) == self.dimension()
+        assert len(point) == dim
 
         # * consider for (a, b), x in zip(self.bounds, point)
         bounds = self.bounds
-        # * consider initializing dim before assert and use it there
-        dim = self.dimension()
+
         # for i in range(dim):
         #    if not bounds[i][0] <= point[i] <= bounds[i][1]:
         #        return False
