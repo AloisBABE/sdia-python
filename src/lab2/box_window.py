@@ -106,17 +106,25 @@ class BoxWindow:
         #    volume *= b - a
         return np.prod(np.dif(self.bounds))
 
-    def indicator_function(self, point):
-        """compute the indicator function of the space delimited by the box at a given point
+    def indicator_function(self, points):
+        """compute the indicator function of the space delimited by the box at a given set of points
 
         Args:
-            point (numpy array): coordinates of the point
+            points (numpy array): coordinates of the points
 
         Returns:
-            [boolean]: value of the indicator function
+            [numpy array of booleans]: value of the indicator function
         """
         # ? how would you handle multiple points
-        return point in self
+        if points.ndim == 2:
+
+            def f(x):
+                return x in self
+
+            return np.apply_along_axis(f, 1, points)
+
+        else:
+            return np.array([points in self])
 
     # todo test it
     def rand(self, n=1, rng=None):

@@ -31,17 +31,17 @@ def box_2d_05():
 
 
 @pytest.mark.parametrize(
-    "point, expected",
+    "points, expected",
     [
-        (np.array([0, 0]), True),
-        (np.array([2.5, 2.5]), True),
-        (np.array([-1, 5]), False),
-        (np.array([10, 3]), False),
+        (np.array([0, 0]), np.array([True])),
+        (np.array([2.5, 2.5]), np.array([True])),
+        (np.array([[-1, 5], [0, 5]]), np.array([False, True])),
+        (np.array([[10, 3], [1, 2], [2.5, 4.6]]), np.array([False, True, True])),
     ],
 )
-def test_indicator_function_box_2d(box_2d_05, point, expected):
-    is_in = box_2d_05.indicator_function(point)
-    assert is_in == expected
+def test_indicator_function_box_2d(box_2d_05, points, expected):
+    is_in = box_2d_05.indicator_function(points)
+    assert np.array_equal(is_in, expected)
 
 
 # ================================
