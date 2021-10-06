@@ -25,21 +25,22 @@ class BoxWindow:
         dim = self.dimension()
         i = 0
 
-        # ! list is a built in function, use a different name
-        for list in self.bounds:
+        # (!) list is a built in function, use a different name
+        for bound in self.bounds:
 
             # * unpacking a, b = list can be another option
-            a = list[0]
-            b = list[1]
+            a, b = bound
             if a.dtype == "float64" and a.is_integer():
                 a = int(a)
             if b.dtype == "float64" and b.is_integer():
                 b = int(b)
-            # ! use f-strings
+            # (!) use f-strings
             if i == dim - 1:
-                string += "[" + str(a) + ", " + str(b) + "]"
+                # string += "[" + str(a) + ", " + str(b) + "]"
+                string += f"[{a}, {b}]"
             else:
-                string += "[" + str(a) + ", " + str(b) + "]" + " x "
+                # string += "[" + str(a) + ", " + str(b) + "]" + " x "
+                string += f"[{a}, {b}] x"
             i += 1
 
         return string
@@ -53,7 +54,8 @@ class BoxWindow:
         """
         # * exploit numpy vectors, use np.diff, np.max
         # * brackets [a, b] are not necessary here
-        return np.max(np.array([b - a for [a, b] in self.bounds]))
+        # return np.max(np.array([b - a for [a, b] in self.bounds]))
+        return np.max(np.diff(self.bounds))
 
     def __contains__(self, point):
         """tell if a given point is contained in the box
@@ -71,11 +73,16 @@ class BoxWindow:
         bounds = self.bounds
         # * consider initializing dim before assert and use it there
         dim = self.dimension()
-        for i in range(dim):
-            if not bounds[i][0] <= point[i] <= bounds[i][1]:
+        # for i in range(dim):
+        #    if not bounds[i][0] <= point[i] <= bounds[i][1]:
+        #        return False
+
+        for (a, b), x in zip(self.bounds, point):
+            if not a <= x <= b:
                 return False
 
         return True
+        # return np.min(np.fromfunction(lambda i: bounds[i][0] <= point[i] <= bounds[i][1], dim))
 
     def dimension(self):
         """returns the number of dimensions of the box
@@ -92,10 +99,10 @@ class BoxWindow:
             [numerical type]: volume of the box
         """
         # * exploit numpy vectors, use - or np.diff, and np.prod
-        V = 1  # ! naming: V -> volume ?
-        for [a, b] in self.bounds:
-            V *= b - a
-        return V
+        # volume = 1  # (!) naming: V -> volume ?
+        # for [a, b] in self.bounds:
+        #    volume *= b - a
+        return np.prod(np.dif(self.bounds))
 
     def indicator_function(self, point):
         """compute the indicator function of the space delimited by the box at a given point
