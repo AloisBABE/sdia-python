@@ -117,11 +117,7 @@ class BoxWindow:
         """
         # ? how would you handle multiple points
         if points.ndim == 2:
-
-            def f(x):
-                return x in self
-
-            return np.apply_along_axis(f, 1, points)
+            return np.apply_along_axis(lambda x: x in self, 1, points)
 
         else:
             return np.array([points in self])
