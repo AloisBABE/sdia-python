@@ -1,6 +1,6 @@
 import numpy as np
 
-from lab2.utils import get_random_number_generator
+from sdia_python.lab2.utils import get_random_number_generator
 
 
 class BoxWindow:
@@ -40,7 +40,7 @@ class BoxWindow:
                 string += f"[{a}, {b}]"
             else:
                 # string += "[" + str(a) + ", " + str(b) + "]" + " x "
-                string += f"[{a}, {b}] x"
+                string += f"[{a}, {b}] x "
             i += 1
 
         return string
@@ -104,7 +104,7 @@ class BoxWindow:
         # volume = 1  # (!) naming: V -> volume ?
         # for [a, b] in self.bounds:
         #    volume *= b - a
-        return np.prod(np.dif(self.bounds))
+        return np.prod(np.diff(self.bounds))
 
     def indicator_function(self, points):
         """compute the indicator function of the space delimited by the box at a given set of points
