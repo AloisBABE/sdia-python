@@ -150,7 +150,7 @@ class BoxWindow:
         """
         # * exploit numpy vectorization power
         # ? how about np.mean
-        return np.array([(a + b) / 2 for [a, b] in self.bounds])
+        return np.mean(self.bounds, axis=1)
 
 
 class UnitBoxWindow(BoxWindow):
