@@ -64,6 +64,22 @@ def test_len(bounds, expected):
 
 
 @pytest.mark.parametrize(
+    "bounds, n",
+    [
+        (np.array([[0, 4], [0, 6]]), 100),
+        (np.array([[0, 3], [0, 6]]), 1000),
+        (np.array([[-1, 4], [3.5, 3.6], [5, 9]]), 10000),
+    ],
+)
+def test_rand(bounds, n):
+    box = BoxWindow(bounds)
+    points = box.rand(n)
+    assert np.array_equal(
+        box.indicator_function(points), True * np.ones((box.dimension(), n))
+    )
+
+
+@pytest.mark.parametrize(
     "bounds, expected",
     [
         (np.array([[0, 4], [0, 6]]), np.array([2, 3])),
