@@ -163,7 +163,8 @@ class UnitBoxWindow(BoxWindow):
         """
         # * exploit numpy vectorization power
         # ? how about np.add.outer
-        bounds = np.array([[c - 0.5, c + 0.5] for c in center])
+        # bounds = np.array([[c - 0.5, c + 0.5] for c in center])
+        bounds = np.column_stack((center - 0.5, center + 0.5))
         super(UnitBoxWindow, self).__init__(bounds)
 
 
