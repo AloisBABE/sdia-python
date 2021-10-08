@@ -1,4 +1,4 @@
-from src.lab2.box_window import BallWindow, BoxWindow, UnitBoxWindow
+from src.sdia_python.lab2.box_window import BallWindow, BoxWindow, UnitBoxWindow
 import numpy as np
 
 

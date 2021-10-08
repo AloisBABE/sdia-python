@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from lab2.box_window import BallWindow, BoxWindow, UnitBoxWindow
+from sdia_python.lab2.box_window import BallWindow, BoxWindow, UnitBoxWindow
 
 
 def test_raise_type_error_when_something_is_called():
@@ -31,36 +31,22 @@ def box_2d_05():
 
 
 @pytest.mark.parametrize(
-    "points, expected",
+    "point, expected",
     [
-        (np.array([0, 0]), np.array([True])),
-        (np.array([2.5, 2.5]), np.array([True])),
-        (np.array([[-1, 5], [0, 5]]), np.array([False, True])),
-        (np.array([[10, 3], [1, 2], [2.5, 4.6]]), np.array([False, True, True])),
+        (np.array([0, 0]), True),
+        (np.array([2.5, 2.5]), True),
+        (np.array([-1, 5]), False),
+        (np.array([10, 3]), False),
     ],
 )
-def test_indicator_function_box_2d(box_2d_05, points, expected):
-    is_in = box_2d_05.indicator_function(points)
-    assert np.array_equal(is_in, expected)
+def test_indicator_function_box_2d(box_2d_05, point, expected):
+    is_in = box_2d_05.indicator_function(point)
+    assert is_in == expected
 
 
 # ================================
 # ==== WRITE YOUR TESTS BELOW ====
 # ================================
-
-
-@pytest.mark.parametrize(
-    "bounds, expected",
-    [
-        (np.array([[0, 4], [0, 6]]), 6),
-        (np.array([[0, 3], [0, 6]]), 6),
-        (np.array([[-1, 4], [3.5, 3.6], [5, 9]]), 5),
-    ],
-)
-def test_len(bounds, expected):
-    box = BoxWindow(bounds)
-    length = len(box)
-    assert expected == length
 
 
 @pytest.mark.parametrize(
@@ -96,7 +82,7 @@ def test_bounds_unitBox_(center, expected):
 def test_volume_unitBox_(center):
     box = UnitBoxWindow(center)
     volume = box.volume()
-    assert volume == 1
+    assert (volume - 1) < 10 ** (-8)
 
 
 @pytest.mark.parametrize(
@@ -110,16 +96,6 @@ def test_ball_string_representation(center, radius, expected):
     ball = BallWindow(center, radius)
     string = str(ball)
     assert string == expected
-
-
-@pytest.mark.parametrize(
-    "center, radius, expected",
-    [(np.array([1, 2, 3]), 4, 8), (np.array([1, 5.12, 4.65, np.pi]), 4.21, 8.42),],
-)
-def test_ball_string_representation(center, radius, expected):
-    ball = BallWindow(center, radius)
-    diameter = len(ball)
-    assert diameter == expected
 
 
 @pytest.mark.parametrize(
