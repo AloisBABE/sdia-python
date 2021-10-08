@@ -137,8 +137,9 @@ class BoxWindow:
         rng = get_random_number_generator(rng)
         # * convention: use _ for unused counters
         # * exploit numpy, rng.uniform(a, b, size=n)
-        pointArray = np.array(
-            [[rng.random() * (b - a) + a for [a, b] in self.bounds] for i in range(n)]
+
+        pointArray = rng.uniform(
+            self.bounds[:, 0], self.bounds[:, 1], (n, self.dimension())
         )
         return pointArray
 
