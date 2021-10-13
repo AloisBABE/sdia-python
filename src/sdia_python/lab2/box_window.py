@@ -25,36 +25,28 @@ class BoxWindow:
         dim = self.dimension()
         i = 0
 
-        # (!) list is a built in function, use a different name
         for bound in self.bounds:
 
-            # * unpacking a, b = list can be another option
             a, b = bound
             if a.dtype == "float64" and a.is_integer():
                 a = int(a)
             if b.dtype == "float64" and b.is_integer():
                 b = int(b)
-            # (!) use f-strings
             if i == dim - 1:
-                # string += "[" + str(a) + ", " + str(b) + "]"
                 string += f"[{a}, {b}]"
             else:
-                # string += "[" + str(a) + ", " + str(b) + "]" + " x "
                 string += f"[{a}, {b}] x "
             i += 1
 
         return string
 
-    # todo test it
     def __len__(self):
         """returns the integer part of the max length of the box sides'
 
         Returns:
             [int]: integer part of max length of the box sides'
         """
-        # * exploit numpy vectors, use np.diff, np.max
-        # * brackets [a, b] are not necessary here
-        # return np.max(np.array([b - a for [a, b] in self.bounds]))
+
         return int(np.max(np.diff(self.bounds)))
 
     def __contains__(self, point):
@@ -66,25 +58,18 @@ class BoxWindow:
         Returns:
             [boolean]: True if the point is in the box, False otherwise
         """
-        # * consider initializing dim before assert and use it there
+
         dim = self.dimension()
 
-        # * nice check
         assert len(point) == dim
 
-        # * consider for (a, b), x in zip(self.bounds, point)
         bounds = self.bounds
-
-        # for i in range(dim):
-        #    if not bounds[i][0] <= point[i] <= bounds[i][1]:
-        #        return False
 
         for (a, b), x in zip(self.bounds, point):
             if not a <= x <= b:
                 return False
 
         return True
-        # return np.min(np.fromfunction(lambda i: bounds[i][0] <= point[i] <= bounds[i][1], dim))
 
     def dimension(self):
         """returns the number of dimensions of the box
@@ -100,10 +85,6 @@ class BoxWindow:
         Returns:
             [numerical type]: volume of the box
         """
-        # * exploit numpy vectors, use - or np.diff, and np.prod
-        # volume = 1  # (!) naming: V -> volume ?
-        # for [a, b] in self.bounds:
-        #    volume *= b - a
         return np.prod(np.diff(self.bounds))
 
     def indicator_function(self, points):
@@ -115,14 +96,12 @@ class BoxWindow:
         Returns:
             [numpy array of booleans]: value of the indicator function
         """
-        # ? how would you handle multiple points
         if points.ndim == 2:
             return np.apply_along_axis(lambda x: x in self, 1, points)
 
         else:
             return np.array([points in self])
 
-    # todo test it
     def rand(self, n=1, rng=None):
         """Generate ``n`` points uniformly at random inside the :py:class:`BoxWindow`.
 
@@ -135,8 +114,6 @@ class BoxWindow:
         """
 
         rng = get_random_number_generator(rng)
-        # * convention: use _ for unused counters
-        # * exploit numpy, rng.uniform(a, b, size=n)
 
         pointArray = rng.uniform(
             self.bounds[:, 0], self.bounds[:, 1], (n, self.dimension())
@@ -149,8 +126,6 @@ class BoxWindow:
         Returns:
             [numpy list]: center point
         """
-        # * exploit numpy vectorization power
-        # ? how about np.mean
         return np.mean(self.bounds, axis=1)
 
 
@@ -161,9 +136,6 @@ class UnitBoxWindow(BoxWindow):
         Args:
             center (numpy list): list of the coordinates of the central point of the box
         """
-        # * exploit numpy vectorization power
-        # ? how about np.add.outer
-        # bounds = np.array([[c - 0.5, c + 0.5] for c in center])
         bounds = np.column_stack((center - 0.5, center + 0.5))
         super(UnitBoxWindow, self).__init__(bounds)
 
@@ -182,8 +154,6 @@ class BallWindow:
         self.center = center
         self.radius = radius
 
-    # todo docstring
-    # todo test it
     def __str__(self):
         """ BallWindow: center:[c1 c2 ...] radius:r
 
@@ -194,7 +164,6 @@ class BallWindow:
 
         return string
 
-    # todo test it
     def __len__(self):
         """returns the diamter of the ball
 
@@ -213,15 +182,9 @@ class BallWindow:
             [boolean]: True if the point is in the ball, False otherwise
         """
         assert len(point) == self.dimension()
-        # dim = self.dimension()
-        # * exploit numpy vectorization power
-        # ? how about np.linalg.norm
-        # distance_squared = 0  # (!) naming: d -> distance ?
-        # for i in range(dim):
-        #    distance_squared += (self.center[i] - point[i]) ** 2
+
         distance = np.linalg.norm(point - self.center)
 
-        # return distance_squared <= self.radius ** 2
         return distance <= self.radius
 
     def dimension(self):
@@ -240,7 +203,6 @@ class BallWindow:
         """
         n = self.dimension()
         R = self.radius
-        # * consider divmod to avoid multiple n//2
         k, remainder = divmod(n, 2)
         if remainder == 0:
             V = np.pi ** k * R ** n / np.math.factorial(k)
