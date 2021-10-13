@@ -19,7 +19,7 @@ class BoxWindow:
         r"""BoxWindow: :math:`[a_1, b_1] \times [a_2, b_2] \times \cdots`
 
         Returns:
-            [str]:
+            [str]: representation of the box.
         """
         string = "BoxWindow: "
         dim = self.dimension()
@@ -158,7 +158,7 @@ class BallWindow:
         """ BallWindow: center:[c1 c2 ...] radius:r
 
         Returns:
-            [type]: [description]
+            [str]: representation of the ball.
         """
         string = f"BallWindow: center:{self.center} radius:{self.radius}"
 
