@@ -230,3 +230,26 @@ class BallWindow:
             return np.apply_along_axis(lambda x: x in self, 1, point)
         else:
             return point in self
+
+    def rand(self, n=1, rng=None):
+        """Generate ``n`` points uniformly at random inside the :py:class:`BallWindow`.
+
+        Args:
+            n (int, optional): number of point to generate. Defaults to 1.
+            rng ([type], optional): np.random.Generator instance. Defaults to None.
+
+        Returns:
+            [numpy list]: list of the generated points
+        """
+
+        dim = self.dimension
+        r = self.radius
+        c = self.center
+
+        rng = get_random_number_generator(rng)
+        A = rng.normal(0, 1, (dim, n))
+        R = rng.uniform(0, 1, n)
+        X = R ** (1 / dim) * A / np.linalg.norm(A, axis=0)
+        pointArray = np.transpose(X * r) + c
+
+        return pointArray
