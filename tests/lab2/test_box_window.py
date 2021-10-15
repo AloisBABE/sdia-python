@@ -157,3 +157,17 @@ def test_indicator_function_ballWindow(center, radius, point, expected):
     ball = BallWindow(center, radius)
     is_in = ball.indicator_function(point)
     assert np.array_equal(is_in, expected)
+
+
+@pytest.mark.parametrize(
+    "center, radius, n",
+    [
+        (np.array([1, 2]), 5, 100),
+        (np.array([5.5, 4.7, 8]), 12, 1000),
+        (np.array([4, 8, 10, 5, 6]), 13.54, 10000),
+    ],
+)
+def test_rand_ball(center, radius, n):
+    ball = BallWindow(center, radius)
+    points = ball.rand(n)
+    assert np.array_equal(ball.indicator_function(points), True * np.ones(n))
