@@ -242,7 +242,7 @@ class BallWindow:
             [numpy list]: list of the generated points
         """
 
-        dim = self.dimension
+        dim = self.dimension()
         r = self.radius
         c = self.center
 
