@@ -8,7 +8,7 @@ See also
 
 ## BoxWindow class
 
-- Edit the class `BoxWindow` in [src/sdia_python/lab2/box_window.py](./box_window.py) to make it work in any dimension (you may start with a low dimensional implementation).
+- Edit the class `BoxWindow` in [src/sdia_python/lab2/window.py](./window.py) to make it work in any dimension (you may start with a low dimensional implementation).
 - Run the tests from [`tests/lab2/`](../../tests/lab2)
 - Complete the class body
   - write the docstrings

@@ -5,7 +5,7 @@ Lab 2
 BoxWindow
 =========
 
-.. automodule:: lab2.box_window
+.. automodule:: lab2.window
     :members:
     :inherited-members:
     :show-inheritance:

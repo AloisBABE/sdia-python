@@ -1,12 +1,7 @@
 import numpy as np
 import pytest
 
-from sdia_python.lab2.box_window import (
-    BallWindow,
-    BoxWindow,
-    UnitBoxWindow,
-    UnitBallWindow,
-)
+from sdia_python.lab2.window import BallWindow, BoxWindow, UnitBoxWindow
 
 
 def test_raise_type_error_when_something_is_called():
@@ -175,24 +170,4 @@ def test_indicator_function_ballWindow(center, radius, point, expected):
 def test_rand_ball(center, radius, n):
     ball = BallWindow(center, radius)
     points = ball.rand(n)
-    assert np.array_equal(ball.indicator_function(points), True * np.ones(n))
-
-
-@pytest.mark.parametrize(
-    "center, expected",
-    [
-        (np.array([0.5, 0.5, 0.5]), np.array([0.5, 0.5, 0.5])),
-        (np.array([6.5]), np.array([6.5])),
-    ],
-)
-def test_center_unitBall_(center, expected):
-    ball = UnitBallWindow(center)
-    assert np.array_equal(ball.center, expected)
-
-
-@pytest.mark.parametrize(
-    "center, expected", [(np.array([0.5, 0.5, 0.5]), 1), (np.array([6.5]), 1),],
-)
-def test_radius_unitBall_(center, expected):
-    ball = UnitBallWindow(center)
-    assert np.array_equal(ball.radius, expected)
+    assert np.array_equal(ball.indicator_function(points), np.full(n, True))
