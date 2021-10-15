@@ -61,9 +61,8 @@ class BoxWindow:
 
         dim = self.dimension()
 
+        # check if the dimension of the point is the same as the box
         assert len(point) == dim
-
-        bounds = self.bounds
 
         for (a, b), x in zip(self.bounds, point):
             if not a <= x <= b:
@@ -225,7 +224,7 @@ class BallWindow:
         Returns:
             [boolean]: value of the indicator function
         """
-        # ? how would you handle multiple points
+
         if len(np.shape(point)) > 1:
             return np.apply_along_axis(lambda x: x in self, 1, point)
         else:
