@@ -62,7 +62,7 @@ def test_indicator_function_box_2d(box_2d_05, point, expected):
         (np.array([[-1, 4], [3.5, 3.6], [5, 9]]), 5),
     ],
 )
-def test_len(bounds, expected):
+def test_len_BoxWindow(bounds, expected):
     box = BoxWindow(bounds)
     length = len(box)
     assert expected == length
@@ -76,7 +76,7 @@ def test_len(bounds, expected):
         (np.array([[-1, 4], [3.5, 3.6], [5, 9]]), 10000),
     ],
 )
-def test_rand(bounds, n):
+def test_rand_BoxWindow(bounds, n):
     box = BoxWindow(bounds)
     points = box.rand(n)
     assert np.array_equal(box.indicator_function(points), True * np.ones(n))
@@ -90,7 +90,7 @@ def test_rand(bounds, n):
         (np.array([[-1, 4], [3.5, 3.6], [5, 9]]), np.array([1.5, 3.55, 7])),
     ],
 )
-def test_center_box_(bounds, expected):
+def test_center_BoxWindow(bounds, expected):
     box = BoxWindow(bounds)
     center = box.center()
     assert np.array_equal(center, expected)
@@ -103,7 +103,7 @@ def test_center_box_(bounds, expected):
         (np.array([6.5]), np.array([[6, 7]])),
     ],
 )
-def test_bounds_unitBox_(center, expected):
+def test_bounds_UnitBox(center, expected):
     box = UnitBoxWindow(center)
     bounds = box.bounds
     assert np.array_equal(bounds, expected)
@@ -112,7 +112,7 @@ def test_bounds_unitBox_(center, expected):
 @pytest.mark.parametrize(
     "center", [(np.array([0.5, 0.5, 0.5])), (np.array([6.5, 7, 18, 6.23])),],
 )
-def test_volume_unitBox_(center):
+def test_volume_UnitBox(center):
     box = UnitBoxWindow(center)
     volume = box.volume()
     assert (volume - 1) < 10 ** (-8)
@@ -138,7 +138,7 @@ def test_ball_string_representation(center, radius, expected):
         (np.array([6.5, 7, 18]), 4, 4 * np.pi * 4 ** 3 / 3),
     ],
 )
-def test_volume_BallWindow_(center, radius, expected):
+def test_volume_BallWindow(center, radius, expected):
     box = BallWindow(center, radius)
     volume = box.volume()
     assert np.abs(volume - expected) < 10 ** (-8)
@@ -158,7 +158,7 @@ def test_volume_BallWindow_(center, radius, expected):
         ),
     ],
 )
-def test_indicator_function_ballWindow(center, radius, point, expected):
+def test_indicator_function_BallWindow(center, radius, point, expected):
     ball = BallWindow(center, radius)
     is_in = ball.indicator_function(point)
     assert np.array_equal(is_in, expected)
@@ -172,7 +172,7 @@ def test_indicator_function_ballWindow(center, radius, point, expected):
         (np.array([4, 8, 10, 5, 6]), 13.54, 10000),
     ],
 )
-def test_rand_ball(center, radius, n):
+def test_rand_BallWindow(center, radius, n):
     ball = BallWindow(center, radius)
     points = ball.rand(n)
     assert np.array_equal(ball.indicator_function(points), True * np.ones(n))
@@ -185,7 +185,7 @@ def test_rand_ball(center, radius, n):
         (np.array([6.5]), np.array([6.5])),
     ],
 )
-def test_center_unitBall_(center, expected):
+def test_center_UnitBall(center, expected):
     ball = UnitBallWindow(center)
     assert np.array_equal(ball.center, expected)
 
@@ -193,6 +193,6 @@ def test_center_unitBall_(center, expected):
 @pytest.mark.parametrize(
     "center, expected", [(np.array([0.5, 0.5, 0.5]), 1), (np.array([6.5]), 1),],
 )
-def test_radius_unitBall_(center, expected):
+def test_radius_UnitBall(center, expected):
     ball = UnitBallWindow(center)
     assert np.array_equal(ball.radius, expected)
