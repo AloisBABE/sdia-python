@@ -1,7 +1,12 @@
 import numpy as np
 import pytest
 
-from sdia_python.lab2.box_window import BallWindow, BoxWindow, UnitBoxWindow
+from sdia_python.lab2.box_window import (
+    BallWindow,
+    BoxWindow,
+    UnitBoxWindow,
+    UnitBallWindow,
+)
 
 
 def test_raise_type_error_when_something_is_called():
@@ -157,3 +162,23 @@ def test_indicator_function_ballWindow(center, radius, point, expected):
     ball = BallWindow(center, radius)
     is_in = ball.indicator_function(point)
     assert np.array_equal(is_in, expected)
+
+
+@pytest.mark.parametrize(
+    "center, expected",
+    [
+        (np.array([0.5, 0.5, 0.5]), np.array([0.5, 0.5, 0.5])),
+        (np.array([6.5]), np.array([6.5])),
+    ],
+)
+def test_center_unitBall_(center, expected):
+    ball = UnitBallWindow(center)
+    assert np.array_equal(ball.center, expected)
+
+
+@pytest.mark.parametrize(
+    "center, expected", [(np.array([0.5, 0.5, 0.5]), 1), (np.array([6.5]), 1),],
+)
+def test_radius_unitBall_(center, expected):
+    ball = UnitBallWindow(center)
+    assert np.array_equal(ball.radius, expected)
