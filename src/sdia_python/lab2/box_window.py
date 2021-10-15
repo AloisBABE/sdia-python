@@ -131,7 +131,7 @@ class BoxWindow:
 
 class UnitBoxWindow(BoxWindow):
     def __init__(self, center):
-        """subclass of BowWindow for boxes with all sides equal to 1
+        """subclass of BoxWindow for boxes with all sides equal to 1
 
         Args:
             center (numpy list): list of the coordinates of the central point of the box
@@ -253,3 +253,13 @@ class BallWindow:
         pointArray = np.transpose(X * r) + c
 
         return pointArray
+
+
+class UnitBallWindow(BallWindow):
+    def __init__(self, center):
+        """subclass of BallWindow for balls with radius equal to 1
+
+        Args:
+            center (numpy list): list of the coordinates of the central point of the box
+        """
+        super(UnitBallWindow, self).__init__(center, radius=1)
